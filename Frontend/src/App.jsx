@@ -1,7 +1,7 @@
 
 import reactLogo from './assets/react.svg'
 import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
+import Pharmacy from "./assets/Pharmacy.png";
 import './App.css'
 
 // File: src/App.jsx
@@ -95,8 +95,7 @@ export default function App()
       id="Home"
         className="h-screen bg-cover bg-center flex items-center justify-center relative"
         style={{
-          backgroundImage:
-            "url('https://images.unsplash.com/photo-1587854692152-cbe660dbde88?q=80&w=2070&auto=format&fit=crop')",
+          backgroundImage: `url(${Pharmacy})`,
         }}
       >
         <div className="absolute inset-0 bg-black/60"></div>
