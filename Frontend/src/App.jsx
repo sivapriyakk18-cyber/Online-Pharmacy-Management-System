@@ -99,7 +99,7 @@ export default function App()
             "url('https://images.unsplash.com/photo-1587854692152-cbe660dbde88?q=80&w=2070&auto=format&fit=crop')",
         }}
       >
-        <div className="absolute inset-0 bg-black/60"></div>
+        <div className="absolute inset-0 bg-black/30"></div>
 
         <div className="relative text-center text-white px-6">
           <h2 className="text-5xl font-bold mb-6">
