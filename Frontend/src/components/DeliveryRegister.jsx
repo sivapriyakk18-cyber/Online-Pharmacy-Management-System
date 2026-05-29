@@ -72,22 +72,18 @@ export default function DeliveryAgentRegister() {
   };
 
   return (
-
     <div className="min-h-screen bg-gray-100">
 
       {/* Navbar */}
       <nav className="bg-teal-700 text-white px-5 py-3 flex justify-between items-center shadow-md">
 
         <h1 className="text-2xl font-bold">
-
           Online Pharmacy
-
         </h1>
 
         <button
           onClick={() => navigate('/delivery-login')}
-          className="flex items-center gap-2 hover:text-gray-200"
-        >
+          className="flex items-center gap-2 hover:text-gray-200">
 
           <FaSignOutAlt />
           Exit
@@ -107,10 +103,8 @@ export default function DeliveryAgentRegister() {
             <FaTruck className="text-4xl text-teal-700 mb-2" />
 
             <h2 className="text-4xl font-bold text-teal-700 text-center leading-tight">
-
               Delivery Agent <br />
               Registration
-
             </h2>
 
           </div>
@@ -122,9 +116,7 @@ export default function DeliveryAgentRegister() {
             <div className="mb-4">
 
               <label className="block text-gray-700 mb-2 font-medium">
-
                 Full Name
-
               </label>
 
               <input
@@ -142,9 +134,7 @@ export default function DeliveryAgentRegister() {
             <div className="mb-4">
 
               <label className="block text-gray-700 mb-2 font-medium">
-
                 Email
-
               </label>
 
               <input
@@ -162,9 +152,7 @@ export default function DeliveryAgentRegister() {
             <div className="mb-4">
 
               <label className="block text-gray-700 mb-2 font-medium">
-
                 Phone
-
               </label>
 
               <input
@@ -182,9 +170,7 @@ export default function DeliveryAgentRegister() {
             <div className="mb-4">
 
               <label className="block text-gray-700 mb-2 font-medium">
-
                 City
-
               </label>
 
               <input
@@ -202,9 +188,7 @@ export default function DeliveryAgentRegister() {
             <div className="mb-6">
 
               <label className="block text-gray-700 mb-2 font-medium">
-
                 Password
-
               </label>
 
               <input
@@ -236,7 +220,5 @@ export default function DeliveryAgentRegister() {
       </div>
 
     </div>
-
   );
-
 }

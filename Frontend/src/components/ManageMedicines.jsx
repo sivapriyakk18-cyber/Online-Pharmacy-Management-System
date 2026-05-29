@@ -90,9 +90,15 @@ useEffect(() => {
             Medicines
           </p>
 
-          <p className="flex items-center gap-2 cursor-pointer">
-            <FaClipboardList />
+          <p
+            onClick={() =>
+              navigate("/manage-orders")
+            }
+            className="flex items-center gap-2 cursor-pointer"
+          >
+
             Orders
+
           </p>
 
           <p className="flex items-center gap-2 cursor-pointer">
@@ -101,23 +107,8 @@ useEffect(() => {
           </p>
 
           <p className="flex items-center gap-2 cursor-pointer">
-            <FaCommentDots />
-            Feedback
-          </p>
-
-          <p className="flex items-center gap-2 cursor-pointer">
             <FaFilePrescription />
             Prescriptions
-          </p>
-
-          <p className="flex items-center gap-2 cursor-pointer">
-            <FaChartBar />
-            Sales
-          </p>
-
-          <p className="flex items-center gap-2 cursor-pointer">
-            <FaChartBar />
-            Analytics
           </p>
 
           <p
@@ -208,17 +199,19 @@ useEffect(() => {
       {medicine.manufacturer}
     </td>
 
-    <td className={`border border-gray-200 font-semibold ${
-      new Date(medicine.expiryDate) < new Date()
-        ? "text-red-600"
-        : "text-green-600"
-        }`}
-    >
-      {new Date(medicine.expiryDate) < new Date()
-      ? "Expired"
-      : medicine.expiryDate
-      }
-    </td>
+    <td
+  className={`border border-gray-200 font-bold ${
+    new Date(medicine.expiryDate) < new Date()
+      ? "text-red-600"
+      : "text-green-600"
+  }`}
+>
+
+  {new Date(medicine.expiryDate) < new Date()
+    ? "Expired"
+    : "Available"}
+
+</td>
 
     <td className="border border-gray-200">
       {medicine.quantity}

@@ -10,7 +10,7 @@ import {
 
 import {
   FaShoppingCart,
-  FaUserCircle,
+  FaSignOutAlt,
   FaBox,
   FaSearch,
   FaTachometerAlt
@@ -159,32 +159,14 @@ export default function OrderHistory() {
 
           <div className="flex items-center gap-4">
 
-  <p className="flex items-center gap-2">
+            <p 
+             onClick={() => navigate('/customer-login')}
+             className="flex items-center gap-2 cursor-pointer hover:text-gray-200">
+               <FaSignOutAlt />
+               Logout
+            </p>
 
-    <FaUserCircle />
-
-    {customer?.fullName}
-
-  </p>
-
-  <button
-    onClick={() => {
-
-      localStorage.removeItem(
-        "customer"
-      );
-
-      navigate("/customer-login");
-
-    }}
-    className="bg-white text-red-500 hover:bg-gray-200 px-4 py-1 rounded font-semibold"
-  >
-
-    Logout
-
-  </button>
-
-</div>
+          </div>
 
         </div>
 

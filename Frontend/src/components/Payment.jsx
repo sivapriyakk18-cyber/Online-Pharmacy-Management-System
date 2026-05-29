@@ -17,116 +17,130 @@ import {
 
 export default function Payment() {
 
-  const navigate = useNavigate();
+  const navigate =
+  useNavigate();
 
-  const location = useLocation();
+const location =
+  useLocation();
 
-  const customer = JSON.parse(
-    localStorage.getItem("customer")
-  );
+const customer =
+JSON.parse(
+  localStorage.getItem(
+    "customer"
+  )
+);
 
-  const cartItems =
-    location.state?.cartItems || [];
+const cartItems =
+  location.state?.cartItems || [];
 
-  const grandTotal =
-    location.state?.grandTotal || 0;
+const grandTotal =
+  location.state?.grandTotal || 0;
 
-  const [paymentMethod,
-    setPaymentMethod] =
-    useState("");
+const [paymentMethod,
+  setPaymentMethod] =
+  useState("");
 
-  // ================= PHARMACY NAME =================
+    // PHARMACY NAME
 
   const pharmacyName =
-    cartItems[0]?.pharmacyName || "";
+  cartItems[0]?.pharmacyName || "";
 
   // ================= CONFIRM ORDER =================
 
   const handleOrder = async () => {
 
-    if (!paymentMethod) {
+  if (!paymentMethod) {
 
-      alert("Select Payment Method");
+    alert("Select Payment Method");
 
-      return;
+    return;
 
-    }
+  }
 
-    try {
+  try {
 
-      const response = await fetch(
-        "http://localhost:5000/api/place-order",
+    const customer =
+      JSON.parse(
+        localStorage.getItem("customer")
+      );
+
+    const pharmacyName =
+      location.state.cartItems[0]
+        ?.pharmacyName;
+
+    const response = await fetch(
+      "http://localhost:5000/api/place-order",
+      {
+        method: "POST",
+
+        headers: {
+          "Content-Type":
+            "application/json"
+        },
+
+        body: JSON.stringify({
+
+  customerId:
+    customer._id,
+
+  customerName:
+    customer.fullName,
+
+  customerAddress:
+    customer.address,
+
+  pharmacyName:
+    cartItems[0]?.pharmacyName,
+
+  medicines:
+    cartItems,
+
+  totalAmount:
+    grandTotal,
+
+  paymentMethod
+
+})
+
+      }
+    );
+
+    const data =
+      await response.json();
+
+    alert(
+      "Order Confirmed Successfully"
+    );
+
+    navigate(
+    "/order-history"
+  );
+
+
+    // CLEAR CART AFTER ORDER
+
+    for (const item of location.state.cartItems) {
+
+      await fetch(
+        `http://localhost:5000/api/cart/${item._id}`,
         {
-          method: "POST",
-
-          headers: {
-            "Content-Type":
-              "application/json"
-          },
-
-          body: JSON.stringify({
-
-            customerId:
-              customer?._id,
-
-            customerName:
-              customer?.fullName,
-
-            pharmacyName:
-              pharmacyName,
-
-            medicines:
-              cartItems,
-
-            totalAmount:
-              grandTotal,
-
-            paymentMethod
-
-          })
-
+          method: "DELETE"
         }
       );
 
-      const data =
-        await response.json();
-
-      if (!response.ok) {
-
-        alert(data.message);
-
-        return;
-
-      }
-
-      // ================= CLEAR CART =================
-
-      for (const item of cartItems) {
-
-        await fetch(
-          `http://localhost:5000/api/cart/${item._id}`,
-          {
-            method: "DELETE"
-          }
-        );
-
-      }
-
-      alert(
-        "Order Confirmed Successfully"
-      );
-
-      navigate("/order-history");
-
-    } catch (error) {
-
-      console.log(error);
-
-      alert("Server Error");
-
     }
 
-  };
+    navigate("/order-history");
+
+  } catch (error) {
+
+    console.log(error);
+
+    alert("Server Error");
+
+  }
+
+};
 
   return (
 
@@ -136,7 +150,7 @@ export default function Payment() {
 
       <nav className="bg-teal-700 text-white px-6 py-4 flex justify-between items-center shadow-md">
 
-        <h1 className="text-2xl font-bold">
+        <h1 className="text-3xl font-bold">
 
           Online Pharmacy
 
@@ -152,7 +166,7 @@ export default function Payment() {
                 "/customer-dashboard"
               )
             }
-            className="flex items-center gap-2 cursor-pointer hover:text-gray-200"
+            className="flex items-center gap-2 cursor-pointer"
           >
 
             <FaTachometerAlt />
@@ -169,7 +183,7 @@ export default function Payment() {
                 "/browse-medicines"
               )
             }
-            className="flex items-center gap-2 cursor-pointer hover:text-gray-200"
+            className="flex items-center gap-2 cursor-pointer"
           >
 
             <FaSearch />
@@ -184,7 +198,7 @@ export default function Payment() {
             onClick={() =>
               navigate("/cart")
             }
-            className="flex items-center gap-2 cursor-pointer hover:text-gray-200"
+            className="flex items-center gap-2 cursor-pointer"
           >
 
             <FaShoppingCart />
@@ -201,7 +215,7 @@ export default function Payment() {
                 "/order-history"
               )
             }
-            className="flex items-center gap-2 cursor-pointer hover:text-gray-200"
+            className="flex items-center gap-2 cursor-pointer"
           >
 
             <FaBox />
@@ -214,34 +228,30 @@ export default function Payment() {
 
           <div className="flex items-center gap-4">
 
-            <p className="flex items-center gap-2">
+  <p className="flex items-center gap-2">
 
-              <FaUserCircle />
+    <FaUserCircle />
 
-              {customer?.fullName}
+    {customer?.fullName}
 
-            </p>
+  </p>
 
-            <button
-              onClick={() => {
+  <button
+    onClick={() => {
 
-                localStorage.removeItem(
-                  "customer"
-                );
+      localStorage.removeItem(
+        "customer"
+      );
 
-                navigate(
-                  "/customer-login"
-                );
+      navigate("/customer-login");
 
-              }}
-              className="bg-white text-red-500 hover:bg-gray-200 px-4 py-1 rounded font-semibold"
-            >
+    }}
+    className="bg-white text-red-500 hover:bg-gray-200 px-4 py-1 rounded font-semibold">
+    Logout
 
-              Logout
+  </button>
 
-            </button>
-
-          </div>
+</div>
 
         </div>
 
@@ -249,11 +259,11 @@ export default function Payment() {
 
       {/* ================= PAYMENT BOX ================= */}
 
-      <div className="flex justify-center pt-16">
+      <div className="flex justify-center pt-20">
 
-        <div className="bg-white w-[70%] p-10 rounded-2xl shadow-xl">
+        <div className="bg-white w-[80%] p-10 rounded-2xl shadow-xl">
 
-          <h1 className="text-3xl font-bold text-teal-700 mb-8 flex items-center gap-3">
+          <h1 className="text-4xl font-bold text-teal-700 mb-8 flex items-center gap-3">
 
             <FaCreditCard />
 
@@ -261,7 +271,7 @@ export default function Payment() {
 
           </h1>
 
-          {/* ================= PAYMENT SELECT ================= */}
+          {/* PAYMENT SELECT */}
 
           <select
             value={paymentMethod}
@@ -277,17 +287,17 @@ export default function Payment() {
               -- Select Payment --
             </option>
 
-            <option value="Cash On Delivery">
+            <option>
               Cash On Delivery
             </option>
 
-            <option value="Online Payment">
+            <option>
               Online Payment
             </option>
 
           </select>
 
-          {/* ================= CONFIRM BUTTON ================= */}
+          {/* CONFIRM BUTTON */}
 
           <button
             onClick={handleOrder}

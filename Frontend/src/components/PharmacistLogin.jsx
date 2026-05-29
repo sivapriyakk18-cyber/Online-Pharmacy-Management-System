@@ -10,11 +10,9 @@ import {
 export default function PharmacistLogin({ goBack }) {
 
   const [showRegister, setShowRegister] = useState(false);
-
   const navigate = useNavigate();
 
   if (showRegister) {
-
     return (
       <PharmacistRegister
         goBack={() => setShowRegister(false)}
@@ -24,7 +22,6 @@ export default function PharmacistLogin({ goBack }) {
   }
 
   return (
-
     <div className="min-h-screen bg-gray-100">
 
       {/* Navbar */}
@@ -53,9 +50,7 @@ export default function PharmacistLogin({ goBack }) {
 
           {/* Heading */}
           <h2 className="text-4xl font-bold text-center mb-8 text-teal-700 flex items-center justify-center gap-3">
-
             <span>💊</span>
-
             <span>Pharmacist Login</span>
 
           </h2>
@@ -126,6 +121,11 @@ export default function PharmacistLogin({ goBack }) {
                 if (data.message === 'Login Successful') {
 
                   alert('Login successful.');
+
+                  localStorage.setItem(
+                    'pharmacist',
+                    JSON.stringify(data.pharmacist)
+                  );
 
                   navigate('/pharmacist-dashboard', {
                     state: {

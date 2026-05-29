@@ -4,7 +4,7 @@ import {
   FaSearch,
   FaShoppingCart,
   FaBox,
-  FaUserCircle,
+  FaSignOutAlt,
   FaChartBar,
   FaPills,
 } from "react-icons/fa";
@@ -71,41 +71,21 @@ const [customer, setCustomer] =
           </p>
 
           <p
-            onClick={() => navigate("/my-orders")}
+            onClick={() => navigate("/order-history")}
             className="flex items-center gap-2 cursor-pointer hover:text-gray-200"
           >
             <FaBox />
             My Orders
           </p>
 
-         <div className="flex items-center gap-4">
+          <p 
+            onClick={() => navigate('/customer-login')}
+            className="flex items-center gap-2 cursor-pointer hover:text-gray-200"
+          >
+            <FaSignOutAlt />
+            Logout
+          </p>
 
-  <p className="flex items-center gap-2">
-
-    <FaUserCircle />
-
-    {customer?.fullName}
-
-  </p>
-
-  <button
-    onClick={() => {
-
-      localStorage.removeItem(
-        "customer"
-      );
-
-      navigate("/customer-login");
-
-    }}
-    className="bg-white text-red-500 hover:bg-gray-200 px-4 py-1 rounded font-semibold"
-  >
-
-    Logout
-
-  </button>
-
-</div>
         </div>
 
       </nav>
@@ -183,7 +163,7 @@ const [customer, setCustomer] =
         {/* My Orders */}
 
         <div
-          onClick={() => navigate("/my-orders")}
+          onClick={() => navigate("/order-history")}
           className="bg-white w-[260px] rounded-2xl shadow-lg p-8 border-l-4 border-teal-700 cursor-pointer hover:scale-105 transition"
         >
 
@@ -222,56 +202,6 @@ const [customer, setCustomer] =
             </span>
 
           </h2>
-
-          {/* Fake Chart */}
-
-          <div className="border rounded-xl p-10 bg-gray-50">
-
-            <div className="flex justify-center items-end gap-10 h-[250px]">
-
-              <div className="flex flex-col items-center">
-
-                <div className="bg-teal-700 w-20 h-44 rounded-t-xl"></div>
-
-                <p className="mt-3 font-semibold">
-                  Paracetamol
-                </p>
-
-              </div>
-
-              <div className="flex flex-col items-center">
-
-                <div className="bg-teal-500 w-20 h-32 rounded-t-xl"></div>
-
-                <p className="mt-3 font-semibold">
-                  Vitamin C
-                </p>
-
-              </div>
-
-              <div className="flex flex-col items-center">
-
-                <div className="bg-teal-400 w-20 h-24 rounded-t-xl"></div>
-
-                <p className="mt-3 font-semibold">
-                  Dolo 650
-                </p>
-
-              </div>
-
-              <div className="flex flex-col items-center">
-
-                <div className="bg-teal-300 w-20 h-16 rounded-t-xl"></div>
-
-                <p className="mt-3 font-semibold">
-                  Cough Syrup
-                </p>
-
-              </div>
-
-            </div>
-
-          </div>
 
           {/* Bottom Icon */}
 

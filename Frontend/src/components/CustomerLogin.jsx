@@ -17,60 +17,59 @@ export default function CustomerLogin() {
   const [password, setPassword] = useState("");
 
   
-  const handleLogin = async (e) => {
+const handleLogin = async (e) => {
 
-    e.preventDefault();
+  e.preventDefault();
 
-    try {
+  try {
 
-      const response = await fetch(
-        "http://localhost:5000/api/customers/login",
-        {
-          method: "POST",
+    const response = await fetch(
+      "http://localhost:5000/api/customers/login",
+      {
+        method: "POST",
 
-          headers: {
-            "Content-Type": "application/json"
-          },
+        headers: {
+          "Content-Type": "application/json"
+        },
 
-          body: JSON.stringify({
-            email,
-            password
-          })
-        }
+        body: JSON.stringify({
+          email,
+          password
+        })
+      }
+    );
+
+    const data = await response.json();
+
+    if (response.ok) {
+
+      // SAVE CUSTOMER DATA
+      localStorage.setItem(
+        "customer",
+        JSON.stringify(data.customer)
       );
 
-      const data = await response.json();
+      alert("Login Successful");
 
-      if (response.ok) {
+      navigate("/customer-dashboard");
 
-        // SAVE CUSTOMER DATA
-        localStorage.setItem(
-          "customer",
-          JSON.stringify(data.customer)
-        );
+    } else {
 
-        alert("Login Successful");
-
-        navigate("/customer-dashboard");
-
-      } else {
-
-        alert(data.message);
-
-      }
-
-    } catch (error) {
-
-      console.log(error);
-
-      alert("Server Error");
+      alert(data.message);
 
     }
 
-  };
+  } catch (error) {
+
+    console.log(error);
+
+    alert("Server Error");
+
+  }
+
+};
 
   return (
-
     <div className="min-h-screen bg-gray-100">
 
       {/* Navbar */}
@@ -82,8 +81,7 @@ export default function CustomerLogin() {
 
         <button
           onClick={() => navigate('/')}
-          className="flex items-center gap-2 hover:text-gray-200"
-        >
+          className="flex items-center gap-2 hover:text-gray-200">
 
           <FaSignOutAlt />
           Exit
@@ -103,9 +101,7 @@ export default function CustomerLogin() {
             <FaUserCircle className="text-4xl text-teal-700" />
 
             <h2 className="text-4xl font-bold text-teal-700">
-
               Customer Login
-
             </h2>
 
           </div>
@@ -117,9 +113,7 @@ export default function CustomerLogin() {
             <div className="mb-5">
 
               <label className="block text-gray-700 font-semibold mb-2">
-
                 Email
-
               </label>
 
               <input
@@ -136,9 +130,7 @@ export default function CustomerLogin() {
             <div className="mb-6">
 
               <label className="block text-gray-700 font-semibold mb-2">
-
                 Password
-
               </label>
 
               <input
@@ -171,8 +163,7 @@ export default function CustomerLogin() {
 
             <button
               onClick={() => navigate('/customer-register')}
-              className="text-teal-700 font-bold hover:underline inline-flex items-center gap-1"
-            >
+              className="text-teal-700 font-bold hover:underline inline-flex items-center gap-1">
 
               <FaUserPlus />
               Register
@@ -186,7 +177,5 @@ export default function CustomerLogin() {
       </div>
 
     </div>
-
   );
-
 }

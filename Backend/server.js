@@ -1,8 +1,8 @@
 // ================= IMPORTS =================
 
-const express = require("express");
-const mongoose = require("mongoose");
-const cors = require("cors");
+const express = require('express');
+const mongoose = require('mongoose');
+const cors = require('cors');
 
 const app = express();
 
@@ -12,152 +12,114 @@ app.use(express.json());
 // ================= MONGODB CONNECTION =================
 
 mongoose
-  .connect(
-    "mongodb://test:test@ac-h3ocbh7-shard-00-00.siyg6sp.mongodb.net:27017,ac-h3ocbh7-shard-00-01.siyg6sp.mongodb.net:27017,ac-h3ocbh7-shard-00-02.siyg6sp.mongodb.net:27017/OnlinePharmacySystem?ssl=true&replicaSet=atlas-30ifzf-shard-0&authSource=admin&appName=Cluster0"
-  )
-  .then(() => {
-    console.log("MongoDB Connected");
-  })
-  .catch((err) => {
-    console.log(err);
+ .connect("mongodb://test:test@ac-h3ocbh7-shard-00-00.siyg6sp.mongodb.net:27017,ac-h3ocbh7-shard-00-01.siyg6sp.mongodb.net:27017,ac-h3ocbh7-shard-00-02.siyg6sp.mongodb.net:27017/OnlinePharmacySystem?ssl=true&replicaSet=atlas-30ifzf-shard-0&authSource=admin&appName=Cluster0")
+ .then(() => {
+     console.log('MongoDB Connected')
+ })
+ .catch((err) => {
+      console.log(err)
   });
+
+
 
 // ================= MEDICINE SCHEMA =================
 
 const medicineSchema = new mongoose.Schema({
+
   pharmacyName: String,
+
   medicineName: String,
+
   manufacturer: String,
+
   expiryDate: String,
+
   quantity: Number,
+
   price: Number,
+
   prescription: Boolean
+
 });
 
 const Medicine = mongoose.model(
-  "Medicine",
+  'Medicine',
   medicineSchema
 );
 
 // ================= ADMIN LOGIN SCHEMA =================
 
 const adminLoginSchema = new mongoose.Schema({
+
   username: String,
+
   password: String
+
 });
 
 const AdminLogin = mongoose.model(
-  "AdminLogin",
+  'AdminLogin',
   adminLoginSchema
 );
 
 // ================= PHARMACIST SCHEMA =================
 
 const pharmacistSchema = new mongoose.Schema({
+
   pharmacyName: String,
+
   ownerName: String,
+
   email: String,
+
   phone: String,
+
   city: String,
+
   address: String,
+
   password: String,
 
   status: {
     type: String,
-    default: "Pending"
+    default: 'Pending'
   },
 
   registeredOn: String
+
 });
 
 const Pharmacist = mongoose.model(
-  "Pharmacistlogins",
+  'Pharmacistlogins',
   pharmacistSchema
 );
 
 // ================= CUSTOMER SCHEMA =================
 
 const customerSchema = new mongoose.Schema({
+
   fullName: String,
+
   email: String,
+
   phone: String,
+
   city: String,
+
+  address: String,
+
   password: String
+
 });
 
 const Customer = mongoose.model(
-  "Customers",
+  'Customers',
   customerSchema
-);
-
-// ================= DELIVERY AGENT SCHEMA =================
-
-const deliveryAgentSchema = new mongoose.Schema({
-  fullName: String,
-  email: String,
-  phone: String,
-  city: String,
-  password: String,
-
-  status: {
-    type: String,
-    default: "Pending"
-  },
-
-  registeredOn: {
-    type: Date,
-    default: Date.now
-  }
-});
-
-const DeliveryAgent = mongoose.model(
-  "DeliveryAgent",
-  deliveryAgentSchema
-);
-
-// ================= CART SCHEMA =================
-
-const cartSchema = new mongoose.Schema({
-  medicineName: String,
-  price: Number,
-  quantity: Number,
-  pharmacyName: String
-});
-
-const Cart = mongoose.model(
-  "Cart",
-  cartSchema
-);
-
-// ================= ORDER SCHEMA =================
-
-const orderSchema = new mongoose.Schema({
-  customerId: String,
-  customerName: String,
-  pharmacyName: String,
-  medicines: Array,
-  totalAmount: Number,
-  paymentMethod: String,
-
-  orderStatus: {
-    type: String,
-    default: "Pending"
-  },
-
-  orderedOn: {
-    type: Date,
-    default: Date.now
-  }
-});
-
-const Order = mongoose.model(
-  "Order",
-  orderSchema
 );
 
 // ================= ADMIN LOGIN API =================
 
-app.post("/api/admin-login", async (req, res) => {
+app.post('/api/admin-login', async (req, res) => {
 
   const { username, password } = req.body;
 
@@ -171,15 +133,15 @@ app.post("/api/admin-login", async (req, res) => {
     await newLogin.save();
 
     if (
-      username === "admin" &&
-      password === "admin123"
+      username === 'admin' &&
+      password === 'admin123'
     ) {
 
-      res.send("Login Successful");
+      res.send('Login Successful');
 
     } else {
 
-      res.send("Invalid Username or Password");
+      res.send('Invalid Username or Password');
 
     }
 
@@ -187,7 +149,7 @@ app.post("/api/admin-login", async (req, res) => {
 
     console.log(error);
 
-    res.send("Server Error");
+    res.send('Server Error');
 
   }
 
@@ -196,12 +158,11 @@ app.post("/api/admin-login", async (req, res) => {
 // ================= MEDICINE APIs =================
 
 // GET ALL MEDICINES
-app.get("/api/medicines", async (req, res) => {
+app.get('/api/medicines', async (req, res) => {
 
   try {
 
-    const medicines =
-      await Medicine.find();
+    const medicines = await Medicine.find();
 
     res.json(medicines);
 
@@ -210,7 +171,7 @@ app.get("/api/medicines", async (req, res) => {
     console.log(error);
 
     res.status(500).json({
-      message: "Server Error"
+      message: 'Server Error'
     });
 
   }
@@ -218,33 +179,28 @@ app.get("/api/medicines", async (req, res) => {
 });
 
 // ADD MEDICINE
-app.post("/api/medicines", async (req, res) => {
+app.post('/api/medicines', async (req, res) => {
 
   try {
 
-    const medicine =
-      new Medicine(req.body);
+    const medicine = new Medicine(req.body);
 
     await medicine.save();
 
-    res.send(
-      "Medicine Added Successfully"
-    );
+    res.send('Medicine Added Successfully');
 
   } catch (error) {
 
     console.log(error);
 
-    res.status(500).send(
-      "Error Adding Medicine"
-    );
+    res.status(500).send('Error Adding Medicine');
 
   }
 
 });
 
 // UPDATE MEDICINE
-app.put("/api/medicines/:id", async (req, res) => {
+app.put('/api/medicines/:id', async (req, res) => {
 
   try {
 
@@ -253,24 +209,20 @@ app.put("/api/medicines/:id", async (req, res) => {
       req.body
     );
 
-    res.send(
-      "Medicine Updated Successfully"
-    );
+    res.send('Medicine Updated Successfully');
 
   } catch (error) {
 
     console.log(error);
 
-    res.status(500).send(
-      "Error Updating Medicine"
-    );
+    res.status(500).send('Error Updating Medicine');
 
   }
 
 });
 
 // DELETE MEDICINE
-app.delete("/api/medicines/:id", async (req, res) => {
+app.delete('/api/medicines/:id', async (req, res) => {
 
   try {
 
@@ -278,17 +230,13 @@ app.delete("/api/medicines/:id", async (req, res) => {
       req.params.id
     );
 
-    res.send(
-      "Medicine Deleted Successfully"
-    );
+    res.send('Medicine Deleted Successfully');
 
   } catch (error) {
 
     console.log(error);
 
-    res.status(500).send(
-      "Error Deleting Medicine"
-    );
+    res.status(500).send('Error Deleting Medicine');
 
   }
 
@@ -297,12 +245,11 @@ app.delete("/api/medicines/:id", async (req, res) => {
 // ================= PHARMACIST APIs =================
 
 // GET ALL PHARMACISTS
-app.get("/api/pharmacists", async (req, res) => {
+app.get('/api/pharmacists', async (req, res) => {
 
   try {
 
-    const pharmacists =
-      await Pharmacist.find();
+    const pharmacists = await Pharmacist.find();
 
     res.json(pharmacists);
 
@@ -310,226 +257,418 @@ app.get("/api/pharmacists", async (req, res) => {
 
     console.log(error);
 
-    res.send(
-      "Error Fetching Pharmacists"
-    );
+    res.send('Error Fetching Pharmacists');
 
   }
 
 });
 
 // ADD PHARMACIST
-app.post("/api/pharmacists", async (req, res) => {
+app.post('/api/pharmacists', async (req, res) => {
 
   try {
 
-    const pharmacist =
-      new Pharmacist(req.body);
+    const pharmacist = new Pharmacist(req.body);
 
     await pharmacist.save();
 
-    res.send(
-      "Pharmacist Added Successfully"
-    );
+    res.send('Pharmacist Added Successfully');
 
   } catch (error) {
 
     console.log(error);
 
-    res.send(
-      "Error Adding Pharmacist"
-    );
+    res.send('Error Adding Pharmacist');
 
   }
 
 });
 
-// PHARMACIST LOGIN
-app.post("/api/pharmacist-login", async (req, res) => {
+// ================= PHARMACIST LOGIN =================
 
-  const { email, password } =
-    req.body;
+app.post(
+  '/api/pharmacist-login',
+  async (req, res) => {
+
+    try {
+
+      console.log(req.body);
+
+      const {
+        email,
+        password
+      } = req.body;
+
+      // CHECK EMPTY
+
+      if (!email || !password) {
+
+        return res.status(400).json({
+
+          message:
+            'Email and Password Required'
+
+        });
+
+      }
+
+      const pharmacist =
+        await Pharmacist.findOne({
+
+          email,
+          password
+
+        });
+
+      console.log(pharmacist);
+
+      // INVALID LOGIN
+
+      if (!pharmacist) {
+
+        return res.status(400).json({
+
+          message:
+            'Invalid Email or Password'
+
+        });
+
+      }
+
+      // NOT APPROVED
+
+      if (
+        pharmacist.status !==
+        'Approved'
+      ) {
+
+        return res.status(400).json({
+
+          message:
+            'Account Not Approved Yet'
+
+        });
+
+      }
+
+      // SUCCESS
+
+      res.status(200).json({
+
+        message:
+          'Login Successful',
+
+        pharmacist: {
+
+          _id:
+            pharmacist._id,
+
+          pharmacyName:
+            pharmacist.pharmacyName,
+
+          email:
+            pharmacist.email
+
+        }
+
+      });
+
+    } catch (error) {
+
+      console.log(error);
+
+      res.status(500).json({
+
+        message:
+          'Server Error'
+
+      });
+
+    }
+
+  }
+);
+
+// APPROVE PHARMACIST
+app.put('/api/pharmacists/approve/:id', async (req, res) => {
 
   try {
 
-    const pharmacist =
-      await Pharmacist.findOne({
-        email,
-        password
+    await Pharmacist.findByIdAndUpdate(
+      req.params.id,
+      {
+        status: 'Approved'
+      }
+    );
+
+    res.send('Approved');
+
+  } catch (error) {
+
+    console.log(error);
+
+    res.send('Error');
+
+  }
+
+});
+
+// REJECT PHARMACIST
+app.put('/api/pharmacists/reject/:id', async (req, res) => {
+
+  try {
+
+    await Pharmacist.findByIdAndUpdate(
+      req.params.id,
+      {
+        status: 'Rejected'
+      }
+    );
+
+    res.send('Rejected');
+
+  } catch (error) {
+
+    console.log(error);
+
+    res.send('Error');
+
+  }
+
+});
+
+// ================= CUSTOMER APIs =================
+
+// REGISTER CUSTOMER
+app.post('/api/customers/register', async (req, res) => {
+
+  try {
+
+    const existingCustomer =
+      await Customer.findOne({
+        email: req.body.email
       });
 
-    if (!pharmacist) {
+    if (existingCustomer) {
 
-      return res.json({
-        message:
-          "Invalid Email or Password"
+      return res.status(400).json({
+        message: 'Email Already Exists'
       });
 
     }
 
-    if (
-      pharmacist.status !== "Approved"
-    ) {
+    const customer = new Customer(req.body);
 
-      return res.json({
-        message:
-          "Account Not Approved"
-      });
+    await customer.save();
 
-    }
-
-    res.json({
-      message: "Login Successful",
-      pharmacyName:
-        pharmacist.pharmacyName
+    res.status(201).json({
+      message: 'Customer Registered Successfully'
     });
 
   } catch (error) {
 
     console.log(error);
 
-    res.send("Server Error");
+    res.status(500).json({
+      message: 'Server Error'
+    });
 
   }
 
 });
 
-// APPROVE PHARMACIST
-app.put(
-  "/api/pharmacists/approve/:id",
-  async (req, res) => {
-
-    try {
-
-      await Pharmacist.findByIdAndUpdate(
-        req.params.id,
-        {
-          status: "Approved"
-        }
-      );
-
-      res.send("Approved");
-
-    } catch (error) {
-
-      console.log(error);
-
-      res.send("Error");
-
-    }
-
-  }
-);
-
-// REJECT PHARMACIST
-app.put(
-  "/api/pharmacists/reject/:id",
-  async (req, res) => {
-
-    try {
-
-      await Pharmacist.findByIdAndUpdate(
-        req.params.id,
-        {
-          status: "Rejected"
-        }
-      );
-
-      res.send("Rejected");
-
-    } catch (error) {
-
-      console.log(error);
-
-      res.send("Error");
-
-    }
-
-  }
-);
-
-// ================= CUSTOMER APIs =================
-
-// REGISTER CUSTOMER
-app.post(
-  "/api/customers/register",
-  async (req, res) => {
-
-    try {
-
-      const existingCustomer =
-        await Customer.findOne({
-          email: req.body.email
-        });
-
-      if (existingCustomer) {
-
-        return res.status(400).json({
-          message:
-            "Email Already Exists"
-        });
-
-      }
-
-      const customer =
-        new Customer(req.body);
-
-      await customer.save();
-
-      res.status(201).json({
-        message:
-          "Customer Registered Successfully"
-      });
-
-    } catch (error) {
-
-      console.log(error);
-
-      res.status(500).json({
-        message: "Server Error"
-      });
-
-    }
-
-  }
-);
-
 // CUSTOMER LOGIN
-app.post(
-  "/api/customers/login",
-  async (req, res) => {
+app.post('/api/customers/login', async (req, res) => {
 
-    const { email, password } =
-      req.body;
+  const { email, password } = req.body;
+
+  try {
+
+    const customer = await Customer.findOne({
+      email,
+      password
+    });
+
+    if (!customer) {
+
+      return res.status(400).json({
+        message: 'Invalid Email or Password'
+      });
+
+    }
+
+    res.status(200).json({
+      message: 'Login Successful',
+      customer
+    });
+
+  } catch (error) {
+
+    console.log(error);
+
+    res.status(500).json({
+      message: 'Server Error'
+    });
+
+  }
+
+});
+
+// GET CUSTOMERS
+app.get('/api/customers', async (req, res) => {
+
+  try {
+
+    const customers = await Customer.find();
+
+    res.json(customers);
+
+  } catch (error) {
+
+    console.log(error);
+
+    res.status(500).json({
+      message: 'Server Error'
+    });
+
+  }
+
+});
+
+// DELETE CUSTOMER
+app.delete('/api/customers/:id', async (req, res) => {
+
+  try {
+
+    await Customer.findByIdAndDelete(
+      req.params.id
+    );
+
+    res.json({
+      message: 'Customer Deleted Successfully'
+    });
+
+  } catch (error) {
+
+    console.log(error);
+
+    res.status(500).json({
+      message: 'Server Error'
+    });
+
+  }
+
+});
+
+// ================= DELIVERY AGENT APIs =================
+
+const deliveryAgentSchema = new mongoose.Schema({
+
+  fullName: String,
+
+  email: String,
+
+  phone: String,
+
+  city: String,
+
+  password: String,
+
+  activeOrders: {
+    type: Number,
+    default: 0
+  },
+
+  status: {
+    type: String,
+    default: 'Pending'
+  },
+
+  registeredOn: {
+    type: Date,
+    default: Date.now
+  }
+
+});
+
+const DeliveryAgent = mongoose.model(
+  'DeliveryAgents',
+  deliveryAgentSchema
+);
+
+// REGISTER DELIVERY AGENT
+app.post('/api/delivery-agents', async (req, res) => {
+
+  try {
+
+    const newAgent =
+      new DeliveryAgent(req.body);
+
+    const savedAgent =
+      await newAgent.save();
+
+    res.status(201).json(savedAgent);
+
+  } catch (error) {
+
+    console.log(error);
+
+    res.status(500).json({
+      message: 'Server Error'
+    });
+
+  }
+
+});
+
+// GET DELIVERY AGENTS
+app.get('/api/delivery-agents', async (req, res) => {
+
+  try {
+
+    const agents =
+      await DeliveryAgent.find();
+
+    res.json(agents);
+
+  } catch (error) {
+
+    console.log(error);
+
+    res.status(500).json({
+      message: 'Server Error'
+    });
+
+  }
+
+});
+
+// APPROVE DELIVERY AGENT
+app.put(
+  '/api/delivery-agents/approve/:id',
+  async (req, res) => {
 
     try {
 
-      const customer =
-        await Customer.findOne({
-          email,
-          password
-        });
+      const updatedAgent =
+        await DeliveryAgent.findByIdAndUpdate(
+          req.params.id,
+          {
+            status: 'Approved'
+          },
+          {
+            new: true
+          }
+        );
 
-      if (!customer) {
-
-        return res.status(400).json({
-          message:
-            "Invalid Email or Password"
-        });
-
-      }
-
-      res.status(200).json({
-        message: "Login Successful",
-        customer
-      });
+      res.json(updatedAgent);
 
     } catch (error) {
 
       console.log(error);
 
       res.status(500).json({
-        message: "Server Error"
+        message: 'Server Error'
       });
 
     }
@@ -537,54 +676,32 @@ app.post(
   }
 );
 
-// ================= DELIVERY LOGIN =================
-
-app.post(
-  "/api/delivery/login",
+// REJECT DELIVERY AGENT
+app.put(
+  '/api/delivery-agents/reject/:id',
   async (req, res) => {
-
-    const { email, password } =
-      req.body;
 
     try {
 
-      const delivery =
-        await DeliveryAgent.findOne({
-          email,
-          password
-        });
+      const updatedAgent =
+        await DeliveryAgent.findByIdAndUpdate(
+          req.params.id,
+          {
+            status: 'Rejected'
+          },
+          {
+            new: true
+          }
+        );
 
-      if (!delivery) {
-
-        return res.status(400).json({
-          message:
-            "Invalid Email or Password"
-        });
-
-      }
-
-      if (
-        delivery.status !== "Approved"
-      ) {
-
-        return res.status(400).json({
-          message:
-            "Account Not Approved Yet"
-        });
-
-      }
-
-      res.json({
-        message: "Login Successful",
-        delivery
-      });
+      res.json(updatedAgent);
 
     } catch (error) {
 
       console.log(error);
 
       res.status(500).json({
-        message: "Server Error"
+        message: 'Server Error'
       });
 
     }
@@ -592,23 +709,73 @@ app.post(
   }
 );
 
-// ================= SEARCH PHARMACY =================
+// DELIVERY LOGIN
+app.post('/api/delivery/login', async (req, res) => {
 
+  const { email, password } = req.body;
+
+  try {
+
+    const delivery =
+      await DeliveryAgent.findOne({
+        email,
+        password
+      });
+
+    if (!delivery) {
+
+      return res.status(400).json({
+        message: 'Invalid Email or Password'
+      });
+
+    }
+
+    if (delivery.status !== 'Approved') {
+
+      return res.status(400).json({
+        message: 'Account Not Approved Yet'
+      });
+
+    }
+
+    res.json({
+      message: 'Login Successful',
+      delivery
+    });
+
+  } catch (error) {
+
+    console.log(error);
+
+    res.status(500).json({
+      message: 'Server Error'
+    });
+
+  }
+
+});
+
+// ================= SEARCH PHARMACIES =================
+
+// SEARCH PHARMACY BY CITY
 app.get(
-  "/api/search-pharmacies/:city",
+  '/api/search-pharmacies/:city',
   async (req, res) => {
 
     try {
+
+      const city =
+        req.params.city;
 
       const pharmacies =
         await Pharmacist.find({
 
           city: {
-            $regex: req.params.city,
-            $options: "i"
+            $regex: city,
+            $options: 'i'
           },
 
-          status: "Approved"
+          status: 'Approved'
 
         });
 
@@ -619,7 +786,7 @@ app.get(
       console.log(error);
 
       res.status(500).json({
-        message: "Server Error"
+        message: 'Server Error'
       });
 
     }
@@ -656,68 +823,36 @@ app.get(
   }
 );
 
-// ================= CART APIs =================
+// ================= CART MODEL =================
 
-app.post("/api/cart", async (req, res) => {
+const cartSchema = new mongoose.Schema({
 
-  try {
+  customerId: String,
 
-    const {
-      medicineName,
-      price,
-      pharmacyName
-    } = req.body;
+  medicineName: String,
 
-    const existingItem =
-      await Cart.findOne({
-        medicineName
-      });
+  pharmacyName: String,
 
-    if (existingItem) {
+  price: Number,
 
-      existingItem.quantity += 1;
-
-      await existingItem.save();
-
-      return res.json({
-        message:
-          "Quantity Updated"
-      });
-
-    }
-
-    const newCart = new Cart({
-      medicineName,
-      price,
-      pharmacyName,
-      quantity: 1
-    });
-
-    await newCart.save();
-
-    res.json({
-      message:
-        "Medicine Added To Cart"
-    });
-
-  } catch (error) {
-
-    console.log(error);
-
-    res.status(500).json({
-      message: "Server Error"
-    });
-
-  }
+  quantity: Number
 
 });
 
-app.get("/api/cart", async (req, res) => {
+const Cart = mongoose.model("Cart", cartSchema);
+
+
+// ================= GET CART =================
+
+app.get("/api/cart/:customerId", async (req, res) => {
 
   try {
 
-    const cartItems =
-      await Cart.find();
+    const cartItems = await Cart.find({
+
+      customerId: req.params.customerId
+
+    });
 
     res.json(cartItems);
 
@@ -726,96 +861,147 @@ app.get("/api/cart", async (req, res) => {
     console.log(error);
 
     res.status(500).json({
+
       message: "Server Error"
+
     });
 
   }
 
 });
+
+
+// ================= UPDATE CART =================
 
 app.put("/api/cart/:id", async (req, res) => {
 
   try {
 
     await Cart.findByIdAndUpdate(
+
       req.params.id,
+
       {
-        quantity:
-          req.body.quantity
+
+        quantity: req.body.quantity
+
       }
+
     );
 
     res.json({
-      message:
-        "Quantity Updated"
+
+      message: "Quantity Updated"
+
     });
 
   } catch (error) {
 
     console.log(error);
 
+    res.status(500).json({
+
+      message: "Server Error"
+
+    });
+
   }
 
 });
 
-app.delete(
-  "/api/cart/:id",
-  async (req, res) => {
 
-    try {
+// ================= DELETE CART =================
 
-      await Cart.findByIdAndDelete(
-        req.params.id
-      );
+app.delete("/api/cart/:id", async (req, res) => {
 
-      res.json({
-        message: "Deleted"
-      });
+  try {
 
-    } catch (error) {
+    await Cart.findByIdAndDelete(req.params.id);
 
-      console.log(error);
+    res.json({
 
-    }
+      message: "Medicine Removed"
+
+    });
+
+  } catch (error) {
+
+    console.log(error);
+
+    res.status(500).json({
+
+      message: "Server Error"
+
+    });
 
   }
-);
 
-// ================= PLACE ORDER =================
+});
+
+// ================= ADD TO CART =================
 
 app.post(
-  "/api/place-order",
+  "/api/add-to-cart",
   async (req, res) => {
 
     try {
 
-      const newOrder = new Order({
+      const {
+        customerId,
+        medicineName,
+        pharmacyName,
+        price,
+        quantity
+      } = req.body;
 
-        customerId:
-          req.body.customerId,
+      // CHECK IF ALREADY EXISTS
 
-        customerName:
-          req.body.customerName,
+      const existingItem =
+        await Cart.findOne({
 
-        pharmacyName:
-          req.body.pharmacyName,
+          customerId,
+          medicineName,
+          pharmacyName
 
-        medicines:
-          req.body.medicines,
+        });
 
-        totalAmount:
-          req.body.totalAmount,
+      // UPDATE QUANTITY
 
-        paymentMethod:
-          req.body.paymentMethod
+      if (existingItem) {
 
-      });
+        existingItem.quantity += quantity;
 
-      await newOrder.save();
+        await existingItem.save();
+
+        return res.json({
+
+          message:
+            "Cart Updated Successfully"
+
+        });
+
+      }
+
+      // NEW ITEM
+
+      const cartItem =
+        new Cart({
+
+          customerId,
+          medicineName,
+          pharmacyName,
+          price,
+          quantity
+
+        });
+
+      await cartItem.save();
 
       res.json({
+
         message:
-          "Order Placed Successfully"
+          "Medicine Added To Cart"
+
       });
 
     } catch (error) {
@@ -823,7 +1009,10 @@ app.post(
       console.log(error);
 
       res.status(500).json({
-        message: "Server Error"
+
+        message:
+          "Server Error"
+
       });
 
     }
@@ -831,28 +1020,46 @@ app.post(
   }
 );
 
-// ================= GET ALL ORDERS =================
+const orderSchema =
+  new mongoose.Schema({
 
-app.get("/api/orders", async (req, res) => {
+    customerId: String,
 
-  try {
+    customerName: String,
 
-    const orders =
-      await Order.find();
+    customerAddress: String,
 
-    res.json(orders);
+    pharmacyName: String,
 
-  } catch (error) {
+    pharmacyAddress: String,
 
-    console.log(error);
+    medicines: Array,
 
-    res.status(500).json({
-      message: "Server Error"
-    });
+    totalAmount: Number,
 
-  }
+    paymentMethod: String,
 
-});
+    assignedAgent: String,
+
+    deliveredDate: String,
+
+    status: {
+      type: String,
+      default: "Pending"
+    },
+
+    orderDate: {
+      type: Date,
+      default: Date.now
+    }
+
+  });
+
+const Order =
+  mongoose.model(
+    "Order",
+    orderSchema
+  );
 
 // ================= GET CUSTOMER ORDERS =================
 
@@ -864,8 +1071,10 @@ app.get(
 
       const orders =
         await Order.find({
+
           customerId:
             req.params.customerId
+
         });
 
       res.json(orders);
@@ -883,58 +1092,433 @@ app.get(
   }
 );
 
-// ================= PHARMACY DASHBOARD OVERVIEW =================
-
-app.get(
-  "/api/pharmacy-overview/:pharmacyName",
+app.put(
+  "/api/orders/approve/:id",
   async (req, res) => {
 
     try {
 
-      const pharmacyName =
-        req.params.pharmacyName;
+      await Order.findByIdAndUpdate(
+        req.params.id,
+        {
+          status:
+            "Approved"
+        }
+      );
 
-      const totalMedicines =
-        await Medicine.countDocuments({
-          pharmacyName
-        });
+      res.json({
 
-      const totalOrders =
-        await Order.countDocuments({
-          pharmacyName
-        });
+        message:
+          "Approved"
 
-      const pendingOrders =
-        await Order.countDocuments({
-          pharmacyName,
-          orderStatus: "Pending"
-        });
+      });
 
-      const orders =
-        await Order.find({
-          pharmacyName
-        });
+    } catch (error) {
 
-      let totalSales = 0;
+      console.log(error);
 
-      orders.forEach((order) => {
+    }
 
-        totalSales +=
-          order.totalAmount || 0;
+  }
+);
 
+app.put(
+  "/api/orders/reject/:id",
+  async (req, res) => {
+
+    try {
+
+      await Order.findByIdAndUpdate(
+        req.params.id,
+        {
+          status:
+            "Rejected"
+        }
+      );
+
+      res.json({
+
+        message:
+          "Rejected"
+
+      });
+
+    } catch (error) {
+
+      console.log(error);
+
+    }
+
+  }
+);
+
+app.get(
+  "/api/pharmacy-orders/:pharmacyName",
+  async (req, res) => {
+    try {
+      const orders = await Order.find({
+        pharmacyName: req.params.pharmacyName
+      });
+      res.json(orders);
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({ message: "Server Error" });
+    }
+  }
+);
+
+app.post(
+  "/api/place-order",
+  async (req, res) => {
+
+    try {
+
+      const pharmacist = await Pharmacist.findOne({ pharmacyName: req.body.pharmacyName });
+      if (pharmacist) {
+        req.body.pharmacyAddress = pharmacist.address || pharmacist.city;
+      }
+
+      const order =
+        new Order(req.body);
+
+      await order.save();
+
+      await Cart.deleteMany({
+        customerId: req.body.customerId
       });
 
       res.json({
 
-        totalMedicines,
-
-        totalOrders,
-
-        pendingOrders,
-
-        totalSales
+        message:
+          "Order Confirmed Successfully"
 
       });
+
+    } catch (error) {
+
+      console.log(error);
+
+      res.status(500).json({
+
+        message:
+          "Server Error"
+
+      });
+
+    }
+
+  }
+);
+
+// ================= ASSIGN DELIVERY AGENT =================
+
+app.put(
+  "/api/orders/assign-agent/:id",
+  async (req, res) => {
+
+    try {
+
+      await Order.findByIdAndUpdate(
+        req.params.id,
+        {
+          assignedAgent:
+            req.body.agentName,
+
+          status:
+            "Assigned"
+        }
+      );
+
+      res.json({
+        message:
+          "Agent Assigned"
+      });
+
+    } catch (error) {
+
+      console.log(error);
+
+      res.status(500).json({
+        message:
+          "Server Error"
+      });
+
+    }
+
+  }
+);
+
+// ================= DELIVERY DASHBOARD =================
+
+app.get(
+  "/api/delivery-dashboard/:agentName",
+  async (req, res) => {
+
+    try {
+
+      const assignedOrders =
+        await Order.find({
+
+          assignedAgent:
+            req.params.agentName
+
+        });
+
+      const completedOrders =
+        await Order.find({
+
+          assignedAgent:
+            req.params.agentName,
+
+          status:
+            "Delivered"
+
+        });
+
+      const pendingOrders =
+        await Order.find({
+
+          assignedAgent:
+            req.params.agentName,
+
+          status:
+            "Delivered"
+
+        });
+
+      res.json({
+
+        assigned:
+          assignedOrders.length,
+
+        completed:
+          completedOrders.length,
+
+        pending:
+          pendingOrders.length
+
+      });
+
+    } catch (error) {
+
+      console.log(error);
+
+      res.status(500).json({
+
+        message:
+          "Server Error"
+
+      });
+
+    }
+
+  }
+);
+
+app.get(
+  "/api/assigned-orders/:agentName",
+  async (req, res) => {
+
+    try {
+
+      const orders =
+        await Order.find({
+
+          assignedAgent:
+            req.params.agentName
+
+        });
+
+      res.json(orders);
+
+    } catch (error) {
+
+      console.log(error);
+
+      res.status(500).json({
+
+        message:
+          "Server Error"
+
+      });
+
+    }
+
+  }
+);
+
+app.put(
+  "/api/orders/delivered/:id",
+  async (req, res) => {
+
+    try {
+
+      await Order.findByIdAndUpdate(
+        req.params.id,
+        {
+          status:
+            "Delivered"
+        }
+      );
+
+      res.json({
+
+        message:
+          "Delivered"
+
+      });
+
+    } catch (error) {
+
+      console.log(error);
+
+    }
+
+  }
+);
+
+// ================= GET ALL ORDERS =================
+
+app.get(
+  "/api/orders",
+  async (req, res) => {
+    try {
+      const orders = await Order.find();
+      res.json(orders);
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({ message: "Server Error" });
+    }
+  }
+);
+
+// ================= COMPLETED ORDERS =================
+
+app.get(
+  "/api/completed-orders/:agentName",
+  async (req, res) => {
+
+    try {
+
+      const orders =
+        await Order.find({
+
+          assignedAgent:
+            req.params.agentName,
+
+          status:
+            "Delivered"
+
+        });
+
+      console.log(orders);
+
+      res.json(orders);
+
+    } catch (error) {
+
+      console.log(error);
+
+      res.status(500).json({
+
+        message:
+          "Server Error"
+
+      });
+
+    }
+
+  }
+);
+
+app.put(
+  "/api/orders/complete/:id",
+  async (req, res) => {
+
+    try {
+
+      await Order.findByIdAndUpdate(
+        req.params.id,
+        {
+          status: "Completed"
+        }
+      );
+
+      res.json({
+        message:
+          "Order Completed"
+      });
+
+    } catch (error) {
+
+      console.log(error);
+
+      res.status(500).json({
+        message:
+          "Server Error"
+      });
+
+    }
+
+  }
+);
+
+// ================= MARK DELIVERED =================
+
+app.put(
+  "/api/orders/delivered/:id",
+  async (req, res) => {
+
+    try {
+
+      await Order.findByIdAndUpdate(
+        req.params.id,
+        {
+
+          status:
+            "Delivered",
+
+          deliveredDate:
+            new Date()
+
+        }
+      );
+
+      res.json({
+
+        message:
+          "Order Delivered"
+
+      });
+
+    } catch (error) {
+
+      console.log(error);
+
+      res.status(500).json({
+
+        message:
+          "Server Error"
+
+      });
+
+    }
+
+  }
+);
+
+// ================= GET CUSTOMERS =================
+
+app.get(
+  "/api/customers",
+  async (req, res) => {
+
+    try {
+
+      const customers =
+        await Customer.find();
+
+      res.json(customers);
 
     } catch (error) {
 
@@ -949,12 +1533,41 @@ app.get(
   }
 );
 
+// ================= DELETE CUSTOMER =================
+
+app.delete(
+  "/api/customers/:id",
+  async (req, res) => {
+
+    try {
+
+      await Customer.findByIdAndDelete(
+        req.params.id
+      );
+
+      res.json({
+        message:
+          "Customer Deleted"
+      });
+
+    } catch (error) {
+
+      console.log(error);
+
+      res.status(500).json({
+        message:
+          "Server Error"
+      });
+
+    }
+
+  }
+);
+
 // ================= SERVER START =================
 
 app.listen(5000, () => {
 
-  console.log(
-    "Server running on port 5000"
-  );
+  console.log('Server running on port 5000');
 
 });

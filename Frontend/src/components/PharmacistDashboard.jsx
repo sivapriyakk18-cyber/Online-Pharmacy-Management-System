@@ -20,12 +20,11 @@ export default function PharmacistDashboard() {
 
   const navigate = useNavigate();
   const location = useLocation();
-  
-  const pharmacyName =
-    location.state?.pharmacyName ||
-    localStorage.getItem("pharmacyName");
 
-  localStorage.setItem("pharmacyName", pharmacyName);
+  const [pharmacist, setPharmacist] = useState(JSON.parse(localStorage.getItem("pharmacist")));
+  
+  const pharmacyName = pharmacist?.pharmacyName || "Pharmacy Dashboard";
+
 
   const [medicines, setMedicines] = useState([]);
   const [pendingOrders, setPendingOrders] = useState([]);
@@ -33,7 +32,6 @@ export default function PharmacistDashboard() {
   const [assignedOrders, setAssignedOrders] = useState([]);
   const [lowStock, setLowStock] = useState([]);
   const [expiredMedicines, setExpiredMedicines] = useState([]);
-  const [expiringSoon, setExpiringSoon] = useState([]);
 
   useEffect(() => {
 
@@ -97,11 +95,6 @@ export default function PharmacistDashboard() {
       count: expiredMedicines.length,
       icon: <FaTimesCircle />
     },
-    {
-      title: "Expiring Soon",
-      count: expiringSoon.length,
-      icon: <FaClock />
-    }
   ];
 
   return (
@@ -142,34 +135,23 @@ export default function PharmacistDashboard() {
             Medicines
           </p>
 
-          <p className="flex items-center gap-2">
-            <FaClipboardList />
+          <p 
+          onClick={() => navigate('/manage-orders')}
+          className="flex items-center gap-2">
+            <FaBox />
             Orders
           </p>
 
-          <p className="flex items-center gap-2">
+          <p
+          onClick={() => navigate('/manage-completed-orders')}
+          className="flex items-center gap-2">
             <FaCheckCircle />
             Completed
           </p>
 
           <p className="flex items-center gap-2">
-            <FaCommentDots />
-            Feedback
-          </p>
-
-          <p className="flex items-center gap-2">
             <FaFilePrescription />
             Prescriptions
-          </p>
-
-          <p className="flex items-center gap-2">
-            <FaChartBar />
-            Sales
-          </p>
-
-          <p className="flex items-center gap-2">
-            <FaChartBar />
-            Analytics
           </p>
 
           <p
@@ -179,9 +161,7 @@ export default function PharmacistDashboard() {
             <FaSignOutAlt />
             Logout
           </p>
-
         </div>
-
       </div>
 
       {/* Heading */}
@@ -195,7 +175,7 @@ export default function PharmacistDashboard() {
         {/* First Row */}
         <div className="flex gap-6 mb-6 flex-wrap justify-center">
 
-          {cards.slice(0, 5).map((card, index) => (
+          {cards.slice(0, 4).map((card, index) => (
 
             <div
               key={index}
@@ -220,7 +200,7 @@ export default function PharmacistDashboard() {
         {/* Second Row */}
         <div className="flex gap-6 flex-wrap justify-center">
 
-          {cards.slice(5, 7).map((card, index) => (
+          {cards.slice(4, 6).map((card, index) => (
 
             <div
               key={index}

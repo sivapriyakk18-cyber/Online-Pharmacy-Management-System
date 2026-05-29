@@ -8,55 +8,80 @@ import {
   FaTrash,
   FaSync,
   FaCreditCard,
-  FaChartBar,
   FaSignOutAlt,
-  FaPills,
-  FaClipboardList,
-  FaUserCircle
+  FaBox,
+  FaSearch,
+  FaTachometerAlt
 } from "react-icons/fa";
 
-import { useNavigate } from "react-router-dom";
+import {
+  useNavigate
+} from "react-router-dom";
 
 export default function Cart() {
 
-  const navigate = useNavigate();
+  const navigate =
+    useNavigate();
 
-  const [cartItems, setCartItems] =
+  const customer =
+  JSON.parse(
+    localStorage.getItem(
+      "customer"
+    )
+  );
+
+  console.log(customer);
+
+  const [cartItems,
+    setCartItems] =
     useState([]);
-
-  const customerName =
-    localStorage.getItem("customerName");
 
   // ================= FETCH CART =================
 
   const fetchCart = async () => {
 
-    try {
+  if (!customer) return;
 
-      const response = await fetch(
-        "http://localhost:5000/api/cart"
-      );
+  try {
 
-      const data =
-        await response.json();
+    const response = await fetch(
+      `http://localhost:5000/api/cart/${customer._id}`
+    );
 
-      setCartItems(data);
+    if (!response.ok) {
 
-    } catch (error) {
-
-      console.log(error);
+      throw new Error("API Error");
 
     }
 
-  };
+    const data = await response.json();
+
+    setCartItems(Array.isArray(data) ? data : []);
+
+  } catch (error) {
+
+    console.log(error);
+
+    alert("Server Error");
+
+  }
+
+};
 
   useEffect(() => {
-
     fetchCart();
-
   }, []);
 
-  // ================= UPDATE =================
+  if (!customer) {
+    return (
+      <h1 className="text-center mt-10 text-3xl">
+        Please Login First
+      </h1>
+    );
+  }
+
+
+  // ================= UPDATE QUANTITY =================
 
   const updateQuantity = async (
     id,
@@ -81,6 +106,10 @@ export default function Cart() {
         }
       );
 
+      alert(
+        "Quantity Updated"
+      );
+
       fetchCart();
 
     } catch (error) {
@@ -93,7 +122,9 @@ export default function Cart() {
 
   // ================= DELETE =================
 
-  const deleteItem = async (id) => {
+  const deleteItem = async (
+    id
+  ) => {
 
     try {
 
@@ -102,6 +133,10 @@ export default function Cart() {
         {
           method: "DELETE"
         }
+      );
+
+      alert(
+        "Medicine Removed"
       );
 
       fetchCart();
@@ -120,7 +155,8 @@ export default function Cart() {
     cartItems.reduce(
       (total, item) =>
         total +
-        item.price * item.quantity,
+        item.price *
+          item.quantity,
       0
     );
 
@@ -130,9 +166,9 @@ export default function Cart() {
 
       {/* ================= NAVBAR ================= */}
 
-      <div className="bg-teal-700 text-white flex justify-between items-center px-8 py-3 shadow-md">
+      <nav className="bg-teal-700 text-white px-6 py-4 flex justify-between items-center shadow-md">
 
-        <h1 className="text-2xl font-bold">
+        <h1 className="text-3xl font-bold">
 
           Online Pharmacy
 
@@ -142,12 +178,14 @@ export default function Cart() {
 
           <p
             onClick={() =>
-              navigate('/customer-dashboard')
+              navigate(
+                "/customer-dashboard"
+              )
             }
             className="flex items-center gap-2 cursor-pointer"
           >
 
-            <FaChartBar />
+            <FaTachometerAlt />
 
             Dashboard
 
@@ -155,20 +193,20 @@ export default function Cart() {
 
           <p
             onClick={() =>
-              navigate('/browse-medicines')
+              navigate(
+                "/browse-medicines"
+              )
             }
             className="flex items-center gap-2 cursor-pointer"
           >
 
-            <FaPills />
+            <FaSearch />
 
             Browse Medicines
 
           </p>
 
-          <p
-            className="flex items-center gap-2 cursor-pointer"
-          >
+          <p className="flex items-center gap-2 cursor-pointer">
 
             <FaShoppingCart />
 
@@ -177,41 +215,40 @@ export default function Cart() {
           </p>
 
           <p
+            onClick={() =>
+              navigate(
+                "/order-history"
+              )
+            }
             className="flex items-center gap-2 cursor-pointer"
           >
 
-            <FaClipboardList />
+            <FaBox />
 
             My Orders
 
           </p>
 
-          <p className="flex items-center gap-2">
+          <div className="flex items-center gap-4">
 
-            <FaUserCircle />
+            <p 
+             onClick={() => navigate('/customer-login')}
+             className="flex items-center gap-2 cursor-pointer hover:text-gray-200">
+               <FaSignOutAlt />
+               Logout
+            </p>
 
-            {customerName}
-
-          </p>
-
-          <button
-            onClick={() => navigate('/')}
-            className="bg-white text-red-500 px-4 py-2 rounded-lg font-semibold"
-          >
-
-            Logout
-
-          </button>
+          </div>
 
         </div>
 
-      </div>
+      </nav>
 
-      {/* ================= CART SECTION ================= */}
+      {/* ================= CART ================= */}
 
       <div className="p-10">
 
-        <div className="bg-white p-8 rounded-2xl shadow-xl">
+        <div className="bg-white rounded-2xl shadow-xl p-8">
 
           <h1 className="text-4xl font-bold text-teal-700 flex items-center gap-3 mb-8">
 
@@ -228,19 +265,27 @@ export default function Cart() {
               <tr className="bg-gray-100">
 
                 <th className="border p-4">
+
                   Medicines
+
                 </th>
 
                 <th className="border p-4">
+
                   Quantity
+
                 </th>
 
                 <th className="border p-4">
+
                   Price
+
                 </th>
 
                 <th className="border p-4">
+
                   Actions
+
                 </th>
 
               </tr>
@@ -250,34 +295,74 @@ export default function Cart() {
             <tbody>
 
               {
-                cartItems.length > 0 ? (
+                cartItems.length ===
+                  0 && (
 
-                  cartItems.map((item) => (
+                  <tr>
 
-                    <tr key={item._id}>
+                    <td
+                      colSpan="4"
+                      className="text-center p-6 text-gray-500"
+                    >
+
+                      No Medicines Added
+
+                    </td>
+
+                  </tr>
+
+                )
+              }
+
+              {
+                cartItems.map(
+                  (item) => (
+
+                    <tr
+                      key={item._id}
+                    >
+
+                      {/* MEDICINE */}
 
                       <td className="border p-4">
 
-                        {item.medicineName}
+                        <b>
+
+                          {
+                            item.medicineName
+                          }
+
+                        </b>
 
                       </td>
+
+                      {/* QUANTITY */}
 
                       <td className="border p-4">
 
                         <input
                           type="number"
                           min="1"
-                          value={item.quantity}
-                          onChange={(e) => {
+                          value={
+                            item.quantity
+                          }
+                          onChange={(
+                            e
+                          ) => {
 
                             const updated =
                               cartItems.map(
-                                (c) =>
-                                  c._id === item._id
+                                (
+                                  c
+                                ) =>
+                                  c._id ===
+                                  item._id
                                     ? {
                                         ...c,
+
                                         quantity:
-                                          e.target
+                                          e
+                                            .target
                                             .value
                                       }
                                     : c
@@ -288,10 +373,12 @@ export default function Cart() {
                             );
 
                           }}
-                          className="w-16 border rounded text-center"
+                          className="w-16 border rounded text-center py-1"
                         />
 
                       </td>
+
+                      {/* PRICE */}
 
                       <td className="border p-4">
 
@@ -301,9 +388,13 @@ export default function Cart() {
 
                       </td>
 
+                      {/* ACTIONS */}
+
                       <td className="border p-4">
 
                         <div className="flex gap-2 justify-center">
+
+                          {/* UPDATE */}
 
                           <button
                             onClick={() =>
@@ -312,12 +403,14 @@ export default function Cart() {
                                 item.quantity
                               )
                             }
-                            className="bg-teal-700 text-white px-3 py-2 rounded"
+                            className="bg-teal-700 hover:bg-teal-800 text-white px-3 py-2 rounded"
                           >
 
                             <FaSync />
 
                           </button>
+
+                          {/* DELETE */}
 
                           <button
                             onClick={() =>
@@ -325,7 +418,7 @@ export default function Cart() {
                                 item._id
                               )
                             }
-                            className="bg-red-500 text-white px-3 py-2 rounded"
+                            className="bg-red-500 hover:bg-red-600 text-white px-3 py-2 rounded"
                           >
 
                             <FaTrash />
@@ -338,23 +431,7 @@ export default function Cart() {
 
                     </tr>
 
-                  ))
-
-                ) : (
-
-                  <tr>
-
-                    <td
-                      colSpan="4"
-                      className="text-center p-6 text-gray-500"
-                    >
-
-                      Cart is Empty
-
-                    </td>
-
-                  </tr>
-
+                  )
                 )
               }
 
@@ -362,22 +439,41 @@ export default function Cart() {
 
           </table>
 
-          <div className="text-right text-2xl font-bold mt-6">
+          {/* TOTAL */}
+
+          <div className="text-right mt-6 text-3xl font-bold">
 
             Grand Total : ₹
             {grandTotal}
 
           </div>
 
+          {/* PAYMENT */}
+
           <div className="flex justify-center mt-8">
 
             <button
-              onClick={() => navigate('/payment')}  
-            className="bg-teal-700 text-white px-8 py-3 rounded-lg flex items-center gap-3">
+              onClick={() => {
+
+  localStorage.setItem(
+    "cartItems",
+    JSON.stringify(cartItems)
+  );
+
+  navigate("/payment",{
+    state:{
+      cartItems,
+      grandTotal
+    }
+  });
+
+}}
+              className="bg-teal-700 hover:bg-teal-800 text-white px-8 py-3 rounded-lg text-lg flex items-center gap-3"
+            >
 
               <FaCreditCard />
 
-              Proceed To Payment
+              Proceed to Payment
 
             </button>
 

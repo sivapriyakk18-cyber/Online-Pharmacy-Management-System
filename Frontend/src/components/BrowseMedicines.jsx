@@ -2,7 +2,7 @@ import React, { useState } from "react";
 
 import {
   FaSearch,
-  FaUserCircle,
+  FaSignOutAlt,
   FaShoppingCart,
   FaBox,
   FaTachometerAlt,
@@ -103,7 +103,7 @@ export default function BrowseMedicines() {
           </p>
 
           <p
-            onClick={() => navigate("/my-orders")}
+            onClick={() => navigate("/order-history")}
             className="flex items-center gap-2 cursor-pointer"
           >
 
@@ -113,13 +113,16 @@ export default function BrowseMedicines() {
 
           </p>
 
-          <p className="flex items-center gap-2">
+          <div className="flex items-center gap-4">
 
-            <FaUserCircle />
+            <p 
+             onClick={() => navigate('/customer-login')}
+             className="flex items-center gap-2 cursor-pointer hover:text-gray-200">
+               <FaSignOutAlt />
+               Logout
+            </p>
 
-            {customer?.fullName}
-
-          </p>
+          </div>
 
         </div>
 

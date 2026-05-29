@@ -132,18 +132,6 @@ const rejectPharmacist = (id) => {
            <FaShoppingCart />
            Orders
          </p>
-         <p 
-         onClick={() => navigate('/manage-feedback')}
-         className="flex items-center gap-2 cursor-pointer hover:text-gray-200">
-           <FaCommentDots />
-           Feedback
-         </p>
-         <p 
-         onClick={() => navigate('/manage-analytics')}
-         className="flex items-center gap-2 cursor-pointer hover:text-gray-200">
-           <FaChartBar />
-           Analytics
-         </p>
          <p
            onClick={() => navigate('/')}
            className="flex items-center gap-2 cursor-pointer hover:text-gray-200">

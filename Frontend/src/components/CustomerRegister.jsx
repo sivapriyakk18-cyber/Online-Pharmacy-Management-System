@@ -16,6 +16,7 @@ export default function CustomerRegister() {
     email: "",
     phone: "",
     city: "",
+    address: "",
     password: "",
   });
 
@@ -44,6 +45,7 @@ export default function CustomerRegister() {
           },
 
           body: JSON.stringify(formData)
+          
         }
       );
 
@@ -72,7 +74,6 @@ export default function CustomerRegister() {
   };
 
   return (
-
     <div className="min-h-screen bg-gray-100 flex flex-col justify-between">
 
       {/* Navbar */}
@@ -103,21 +104,15 @@ export default function CustomerRegister() {
           <div className="flex flex-col items-center mb-6">
 
             <div className="bg-teal-50 p-4 rounded-full mb-3 text-teal-700 text-3xl">
-
               <FaUserPlus />
-
             </div>
 
             <h2 className="text-3xl font-bold text-teal-700 text-center">
-
               Customer Registration
-
             </h2>
 
             <p className="text-gray-500 text-sm mt-1 text-center">
-
               Create your account to order medicines online
-
             </p>
 
           </div>
@@ -129,9 +124,7 @@ export default function CustomerRegister() {
             <div>
 
               <label className="block text-gray-700 font-medium mb-1">
-
                 Full Name
-
               </label>
 
               <input
@@ -150,9 +143,7 @@ export default function CustomerRegister() {
             <div>
 
               <label className="block text-gray-700 font-medium mb-1">
-
                 Email Address
-
               </label>
 
               <input
@@ -171,9 +162,7 @@ export default function CustomerRegister() {
             <div>
 
               <label className="block text-gray-700 font-medium mb-1">
-
                 Phone Number
-
               </label>
 
               <input
@@ -192,9 +181,7 @@ export default function CustomerRegister() {
             <div>
 
               <label className="block text-gray-700 font-medium mb-1">
-
                 City
-
               </label>
 
               <input
@@ -209,13 +196,30 @@ export default function CustomerRegister() {
 
             </div>
 
+            {/* Address */}
+            <div>
+
+              <label className="block text-gray-700 font-medium mb-1">
+                Address
+              </label>
+
+              <input
+                type="text"
+                name="address"
+                required
+                placeholder="Enter Address"
+                className="w-full border border-gray-300 rounded-md px-4 py-3 outline-none focus:border-teal-700 transition"
+                value={formData.address}
+                onChange={handleChange}
+              />
+
+            </div>
+
             {/* Password */}
             <div>
 
               <label className="block text-gray-700 font-medium mb-1">
-
                 Password
-
               </label>
 
               <input
@@ -266,13 +270,9 @@ export default function CustomerRegister() {
 
       {/* Footer */}
       <footer className="bg-teal-700 text-white py-4 text-center text-xs">
-
         © 2026 Online Pharmacy Management System
-
       </footer>
 
     </div>
-
   );
-
 }

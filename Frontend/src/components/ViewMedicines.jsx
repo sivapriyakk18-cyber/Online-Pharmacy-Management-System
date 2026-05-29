@@ -50,32 +50,50 @@ export default function ViewMedicines() {
 
   };
 
-    const addToCart = async (medicine) => {
+    const customer =
+  JSON.parse(
+    localStorage.getItem("customer")
+  );
+
+const handleAddToCart = async (medicine) => {
 
   try {
 
+    const customer =
+      JSON.parse(
+        localStorage.getItem("customer")
+      );
+
     const response = await fetch(
-      "http://localhost:5000/api/cart",
-      {
-        method: "POST",
+  "http://localhost:5000/api/add-to-cart",
+  {
+    method: "POST",
 
-        headers: {
-          "Content-Type":
-            "application/json"
-        },
+    headers: {
+      "Content-Type":
+        "application/json"
+    },
 
-        body: JSON.stringify({
+    body: JSON.stringify({
 
-          medicineName:
-            medicine.medicineName,
+      customerId:
+        customer._id,
 
-          price:
-            medicine.price
+      medicineName:
+        medicine.medicineName,
 
-        })
+      pharmacyName:
+        medicine.pharmacyName,
 
-      }
-    );
+      price:
+        medicine.price,
+
+      quantity: 1
+
+    })
+
+  }
+);
 
     const data =
       await response.json();
@@ -86,16 +104,23 @@ export default function ViewMedicines() {
         "Medicine Added Successfully"
       );
 
+      navigate("/cart");
+
+    } else {
+
+      alert(data.message);
+
     }
 
   } catch (error) {
 
     console.log(error);
 
+    alert("Server Error");
+
   }
 
 };
-
 
   return (
 
@@ -200,39 +225,15 @@ export default function ViewMedicines() {
                   </p>
 
                   <button
-                  onClick={async () => {
+                    onClick={() =>
+                      handleAddToCart(medicine)
+                    }
+                    className="bg-teal-700 text-white px-5 py-2 rounded-lg"
+                  >
 
-                    await fetch(
-                      "http://localhost:5000/api/cart",
-                      {
-                        method: "POST",
+                      Add To Cart
 
-                        headers: {
-                        "Content-Type": "application/json"},
-
-                        body: JSON.stringify({
-
-                          medicineName: medicine.medicineName,
-
-                          price: medicine.price,
-
-                          pharmacyName: medicine.pharmacyName
-
-                        })
-
-                      }
-                    );
-
-                    alert("Medicine Added Successfully");
-                    navigate(`/cart`);
-
-                    }}
-                    className="bg-teal-700 text-white px-4 py-2 rounded-lg"
-                    >
-                    Add To Cart
                   </button>
-                  
-
                 </div>
 
               </div>

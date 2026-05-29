@@ -13,7 +13,7 @@ import {
 
 import { useNavigate } from "react-router-dom";
 
-export default function ManageDeliveryAgent() {
+export default function ManageDeliveryAgents() {
 
   const navigate = useNavigate();
 
@@ -23,10 +23,10 @@ export default function ManageDeliveryAgent() {
   const fetchAgents = () => {
 
     axios
-      .get("http://localhost:5000/api/delivery-agent")
+      .get("http://localhost:5000/api/delivery-agents")
       .then((res) => {
 
-        setAgent(res.data);
+        setAgents(res.data);
 
       })
       .catch((err) => {
@@ -39,7 +39,7 @@ export default function ManageDeliveryAgent() {
 
   useEffect(() => {
 
-    fetchAgent();
+    fetchAgents();
 
   }, []);
 
@@ -49,10 +49,10 @@ export default function ManageDeliveryAgent() {
     try {
 
       await axios.put(
-        `http://localhost:5000/api/delivery-agent/approve/${id}`
+        `http://localhost:5000/api/delivery-agents/approve/${id}`
       );
 
-      fetchAgent();
+      fetchAgents();
 
     } catch (error) {
 
@@ -68,10 +68,10 @@ export default function ManageDeliveryAgent() {
     try {
 
       await axios.put(
-        `http://localhost:5000/api/delivery-agent/reject/${id}`
+        `http://localhost:5000/api/delivery-agents/reject/${id}`
       );
 
-      fetchAgent();
+      fetchAgents();
 
     } catch (error) {
 
@@ -115,7 +115,7 @@ export default function ManageDeliveryAgent() {
           </p>
 
           <p
-            onClick={() => navigate('/manage-delivery-agent')}
+            onClick={() => navigate('/manage-delivery-agents')}
             className="flex items-center gap-2 cursor-pointer hover:text-gray-200">
             <FaTruck />
             Delivery Agents
@@ -126,20 +126,6 @@ export default function ManageDeliveryAgent() {
             className="flex items-center gap-2 cursor-pointer hover:text-gray-200">
             <FaShoppingCart />
             Orders
-          </p>
-
-          <p
-            onClick={() => navigate('/manage-feedback')}
-            className="flex items-center gap-2 cursor-pointer hover:text-gray-200">
-            <FaCommentDots />
-            Feedback
-          </p>
-
-          <p
-            onClick={() => navigate('/manage-analytics')}
-            className="flex items-center gap-2 cursor-pointer hover:text-gray-200">
-            <FaChartBar />
-            Analytics
           </p>
 
           <p
@@ -248,7 +234,6 @@ export default function ManageDeliveryAgent() {
                        {agent.status || "Pending"}
 
                </td>
-
                   <td className="border px-4 py-3">
                     {new Date(agent.registeredOn).toLocaleString()}
                   </td>

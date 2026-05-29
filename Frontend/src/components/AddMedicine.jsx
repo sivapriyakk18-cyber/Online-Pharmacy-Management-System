@@ -1,4 +1,4 @@
- import{
+import {
   FaPills,
   FaClipboardList,
   FaCheckCircle,
@@ -14,8 +14,15 @@
   FaRupeeSign
 } from "react-icons/fa";
 
-import { useNavigate,useLocation } from "react-router-dom";
-import { useState } from "react";
+import {
+  useNavigate,
+  useLocation
+} from "react-router-dom";
+
+import {
+  useState
+} from "react";
+
 import axios from "axios";
 
 export default function AddMedicine() {
@@ -23,7 +30,10 @@ export default function AddMedicine() {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const pharmacyName = location.state?.pharmacyName || localStorage.getItem("pharmacyName");
+  const pharmacyName =
+    location.state?.pharmacyName ||
+    localStorage.getItem("pharmacyName");
+
   const [medicineName, setMedicineName] = useState("");
   const [manufacturer, setManufacturer] = useState("");
   const [expiryDate, setExpiryDate] = useState("");
@@ -103,11 +113,10 @@ export default function AddMedicine() {
       </div>
 
       {/* Heading */}
-      <h2 className="text-5xl font-bold text-center text-teal-700 mt-6 flex items-center justify-center gap-3">
 
+      <h2 className="text-5xl font-bold text-center text-teal-700 mt-6 flex items-center justify-center gap-3">
         <FaPlusCircle />
         Add New Medicine
-
       </h2>
 
       {/* Form */}
@@ -119,10 +128,8 @@ export default function AddMedicine() {
           <div className="mb-6">
 
             <label className="flex items-center gap-2 mb-2 font-medium text-gray-700">
-
               <FaCapsules />
               Medicine Name
-
             </label>
 
             <input
@@ -137,13 +144,12 @@ export default function AddMedicine() {
           </div>
 
           {/* Manufacturer */}
+
           <div className="mb-6">
 
             <label className="flex items-center gap-2 mb-2 font-medium text-gray-700">
-
               <FaIndustry />
               Manufacturer
-
             </label>
 
             <input
@@ -158,13 +164,12 @@ export default function AddMedicine() {
           </div>
 
           {/* Expiry */}
+
           <div className="mb-6">
 
             <label className="flex items-center gap-2 mb-2 font-medium text-gray-700">
-
               <FaCalendarAlt />
               Expiry Date
-
             </label>
 
             <input
@@ -179,13 +184,12 @@ export default function AddMedicine() {
           </div>
 
           {/* Quantity */}
+
           <div className="mb-6">
 
             <label className="flex items-center gap-2 mb-2 font-medium text-gray-700">
-
               <FaBoxes />
               Quantity
-
             </label>
 
             <input
@@ -203,10 +207,8 @@ export default function AddMedicine() {
           <div className="mb-6">
 
             <label className="flex items-center gap-2 mb-2 font-medium text-gray-700">
-
               <FaRupeeSign />
               Price
-
             </label>
 
             <input
@@ -264,9 +266,11 @@ export default function AddMedicine() {
                   medicineData
                 );
 
-                navigate('/manage-medicines',{
-                  state: { pharmacyName: pharmacyName}
-                })
+                navigate('/manage-medicines', {
+                  state: {
+                    pharmacyName: pharmacyName
+                  }
+                });
 
               } catch (error) {
 
@@ -280,9 +284,7 @@ export default function AddMedicine() {
 
             className="w-full bg-teal-700 text-white py-4 rounded-md text-xl font-semibold hover:bg-teal-800"
           >
-
             Add Medicine
-
           </button>
 
         </div>

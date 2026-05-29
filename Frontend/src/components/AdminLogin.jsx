@@ -12,42 +12,33 @@ export default function AdminLogin({ goBack }) {
 
       {/* Navbar */}
       <nav className="bg-teal-700 text-white px-8 py-4 flex justify-between items-center shadow-lg">
-
         <h1 className="text-3xl font-bold">
           Online Pharmacy
         </h1>
 
-        <button 
+        <button
           onClick={() => navigate('/')}
           className="flex items-center gap-2 hover:text-gray-200"
         >
-
           <FaSignOutAlt />
           Exit
-
         </button>
 
       </nav>
 
       {/* Login Box */}
       <div className="flex items-center justify-center h-[85vh]">
-
         <div className="bg-white w-[320px] rounded-xl shadow-2xl p-4">
 
           {/* Heading */}
           <h2 className="text-4xl font-bold text-center text-teal-700 mb-8">
-
             Admin Login
-
           </h2>
 
           {/* Username */}
           <div className="mb-5">
-
             <label className="block mb-2 text-gray-700 font-medium">
-
               Admin Username
-
             </label>
 
             <input
@@ -60,11 +51,8 @@ export default function AdminLogin({ goBack }) {
 
           {/* Password */}
           <div className="mb-6">
-
             <label className="block mb-2 text-gray-700 font-medium">
-
               Password
-
             </label>
 
             <input
@@ -77,7 +65,6 @@ export default function AdminLogin({ goBack }) {
 
           {/* Login Button */}
           <button
-
             onClick={async () => {
 
               const username =
@@ -99,7 +86,6 @@ export default function AdminLogin({ goBack }) {
                 if (response.data === 'Login Successful') {
 
                   alert('Login Successful. Welcome Admin');
-
                   navigate('/admin-dashboard');
 
                 } else {
@@ -109,20 +95,14 @@ export default function AdminLogin({ goBack }) {
                 }
 
               } catch (error) {
-
                 console.log(error);
-
                 alert('Server Error');
-
               }
 
             }}
-
             className="w-full bg-teal-700 text-white py-3 rounded-lg text-lg font-semibold hover:bg-teal-800 transition"
           >
-
             Login
-
           </button>
 
         </div>
