@@ -12,12 +12,12 @@ app.use(express.json());
 // ================= MONGODB CONNECTION =================
 
 mongoose
- .connect("mongodb://test:test@ac-h3ocbh7-shard-00-00.siyg6sp.mongodb.net:27017,ac-h3ocbh7-shard-00-01.siyg6sp.mongodb.net:27017,ac-h3ocbh7-shard-00-02.siyg6sp.mongodb.net:27017/OnlinePharmacySystem?ssl=true&replicaSet=atlas-30ifzf-shard-0&authSource=admin&appName=Cluster0")
- .then(() => {
-     console.log('MongoDB Connected')
- })
- .catch((err) => {
-      console.log(err)
+  .connect("mongodb://test:test@ac-h3ocbh7-shard-00-00.siyg6sp.mongodb.net:27017,ac-h3ocbh7-shard-00-01.siyg6sp.mongodb.net:27017,ac-h3ocbh7-shard-00-02.siyg6sp.mongodb.net:27017/OnlinePharmacySystem?ssl=true&replicaSet=atlas-30ifzf-shard-0&authSource=admin&appName=Cluster0")
+  .then(() => {
+    console.log('MongoDB Connected')
+  })
+  .catch((err) => {
+    console.log(err)
   });
 
 
@@ -1565,6 +1565,13 @@ app.delete(
 );
 
 // ================= SERVER START =================
+
+// A simple root route to verify the backend is alive.
+app.get("/", (req, res) => {
+  res.status(200).json({
+    message: "Online Pharmacy Backend is running smoothly!",
+  });
+});
 
 app.listen(5000, () => {
 
